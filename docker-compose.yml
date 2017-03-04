@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+
+  jenkins:
+    image: jenkins
+    volumes:
+    - ~/jenkins-home:/var/jenkins_home
+    - /var/run/docker.sock:/var/run/docker.sock
+    - /usr/bin/docker:/usr/bin/docker:ro
+    ports:
+    - 80:8080
+    - 50000:50000
