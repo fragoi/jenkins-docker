@@ -1,12 +1,39 @@
-FROM jenkins
+FROM jenkins/jenkins
 
-## The Docker group ID
-ARG docker_gid=999
-
-## Add Jenkins user to docker group
 USER root
-RUN groupadd -g ${docker_gid} docker &&\
-    usermod -aG docker jenkins
 
-## Drop back to regular user
+## Update packages
+RUN apt-get update
+
+## Install packages
+RUN DEBIAN_FRONTEND=noninteractive \
+	apt-get install -y \
+		apt-transport-https \
+		ca-certificates \
+		curl \
+		gnupg2 \
+		software-properties-common
+
+## Add Docker repository key
+RUN curl -fsSL https://download.docker.com/linux/debian/gpg \
+	| apt-key add -
+
+## Add Docker repository
+RUN add-apt-repository \
+		"deb [arch=amd64] https://download.docker.com/linux/debian \
+		$(lsb_release -cs) \
+		stable" \
+	&& apt-get update
+
+## Install Docker
+RUN DEBIAN_FRONTEND=noninteractive \
+	apt-get install -y \
+		docker-ce
+
+## Clean apt cache
+RUN rm -rf /var/lib/apt/lists/*
+
+## Add jenkins user to docker group
+RUN usermod -aG docker jenkins
+
 USER jenkins
