@@ -11,7 +11,7 @@ RUN DEBIAN_FRONTEND=noninteractive \
 		apt-transport-https \
 		ca-certificates \
 		curl \
-		gnupg2 \
+		gnupg-agent \
 		software-properties-common
 
 ## Add Docker repository key
@@ -28,7 +28,9 @@ RUN add-apt-repository \
 ## Install Docker
 RUN DEBIAN_FRONTEND=noninteractive \
 	apt-get install -y \
-		docker-ce
+		docker-ce \
+		docker-ce-cli \
+		containerd.io
 
 ## Clean apt cache
 RUN rm -rf /var/lib/apt/lists/*
