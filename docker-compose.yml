@@ -3,7 +3,7 @@ version: '3'
 services:
 
   jenkins:
-    build: .
+    build: jenkins
     image: jenkins-docker
     volumes:
     - jenkins_home:/var/jenkins_home
