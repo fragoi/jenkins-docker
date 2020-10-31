@@ -36,4 +36,7 @@ RUN apt-get update \
 RUN groupadd -g ${docker_gid} docker \
   && usermod -aG docker jenkins
 
+## Set timezone
+RUN echo 'Europe/Rome' > /etc/timezone
+
 USER jenkins
